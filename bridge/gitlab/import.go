@@ -179,6 +179,7 @@ func (gi *gitlabImporter) ensureIssueEvent(repo *cache.RepoCache, b *cache.BugCa
 				metaKeyGitlabId: event.ID(),
 			},
 		)
+
 		if err != nil {
 			return err
 		}
@@ -299,20 +300,6 @@ func (gi *gitlabImporter) ensureIssueEvent(repo *cache.RepoCache, b *cache.BugCa
 
 		gi.out <- core.NewImportTitleEdition(op.Id())
 
-	case EventUnknown,
-		EventAssigned,
-		EventUnassigned,
-		EventChangedMilestone,
-		EventRemovedMilestone,
-		EventChangedDuedate,
-		EventRemovedDuedate,
-		EventLocked,
-		EventUnlocked,
-		EventMentionedInIssue,
-		EventMentionedInMergeRequest:
-
-		return nil
-
 	case EventAddLabel:
 		_, err = b.ForceChangeLabelsRaw(
 			author,
@@ -336,6 +323,20 @@ func (gi *gitlabImporter) ensureIssueEvent(repo *cache.RepoCache, b *cache.BugCa
 			},
 		)
 		return err
+
+	case EventAssigned,
+		EventUnassigned,
+		EventChangedMilestone,
+		EventRemovedMilestone,
+		EventChangedDuedate,
+		EventRemovedDuedate,
+		EventLocked,
+		EventUnlocked,
+		EventMentionedInIssue,
+		EventMentionedInMergeRequest:
+
+		return nil
+
 	default:
 		return fmt.Errorf("unexpected event")
 	}

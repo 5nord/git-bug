@@ -124,9 +124,9 @@ func (l LabelEvent) CreatedAt() time.Time { return *l.LabelEvent.CreatedAt }
 func (l LabelEvent) Kind() EventKind {
 	switch l.Action {
 	case "add":
-		return EventClosed
+		return EventAddLabel
 	case "remove":
-		return EventReopened
+		return EventRemoveLabel
 	default:
 		return EventUnknown
 	}
